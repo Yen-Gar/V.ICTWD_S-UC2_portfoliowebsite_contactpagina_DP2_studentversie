@@ -5,11 +5,17 @@ namespace Portfoliowebsite.Controllers
 {
     public class ContactController : Controller
     {
-
         private readonly IEmailSender _email;
-        public ContactController(IEmailSender email) => _email = email;
 
-        public IActionResult Index() => View();
+        public ContactController(IEmailSender email)
+        {
+            _email = email;
+        }
+
+        public IActionResult Index()
+        {
+            return View();
+        }
 
         [HttpPost]
         public async Task<IActionResult> Index(string Name, string Email, string Subject, string Message)
@@ -20,7 +26,7 @@ namespace Portfoliowebsite.Controllers
             TempData["ThanksEmail"] = Email;
             TempData["ThanksMessage"] = Message;
 
-            return RedirectToAction(nameof(Thanks));
+            return RedirectToAction("Thanks");
         }
 
         public IActionResult Thanks()

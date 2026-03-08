@@ -7,21 +7,26 @@ namespace Portfoliowebsite.Services
     {
         public async Task SendAsync(string Name, string Email, string Subject, string Message)
         {
-            var smtp = new SmtpClient("smtp.mailtrap.io", 2525)
+            using (var smtp = new SmtpClient("smtp.gmail.com"))
             {
-                EnableSsl = false,
-                Credentials = new NetworkCredential("", "") // TODO: vervang met je eigen mailtrap credentials
-            };
+                smtp.Port = 587; // Usually 587 for SSL/TLS
+                smtp.UseDefaultCredentials = false; // Must be false to use the line below
+                smtp.Credentials = new NetworkCredential("YOUR_EMAIL", "YOUR_APP_PASSWORD");
+                smtp.EnableSsl = true;
 
-            var mail = new MailMessage();
-            mail.From = new MailAddress("noreply@example.com", "Website");
+                var mail = new MailMessage();
+                mail.From = new MailAddress("noreply@example.com", "Website");
 
-            mail.To.Add("contact@example.com");
+                mail.To.Add("contact@example.com");
 
-            mail.Subject = $"Contact: {Subject}";
-            mail.Body = $"Naam: {Name}\nEmail: {Email}\nBericht:\n{Message}";
+                mail.Subject = $"Contact: {Subject}";
+                mail.Body = $"Naam: {Name}\nEmail: {Email}\nBericht:\n{Message}";
 
-            await smtp.SendMailAsync(mail);
+
+                await smtp.SendMailAsync(mail);
+            }
+   
+           
         }
     }
 }

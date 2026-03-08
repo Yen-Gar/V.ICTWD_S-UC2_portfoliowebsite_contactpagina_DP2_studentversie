@@ -1,11 +1,5 @@
 ﻿window.addEventListener('contextmenu', e => e.preventDefault()); 
 
-window.addEventListener('keydown', e => {
-    if (e.key === 'Tab') {
-        e.preventDefault();
-    }
-});
-
 function naiveEmailCheck(email) {
     return /@/.test(email);
 }
@@ -38,6 +32,13 @@ function setupValidation() {
     });
 
     form.addEventListener('submit', (e) => {
+
+        const btn = document.getElementById('sendBtn');
+        btn.textContent = "Bezig met versturen...";
+        btn.disabled = true;
+
+        status.textContent = "Bericht wordt verzonden";
+
         if (hp.value) {
             e.preventDefault();
             alert('Spam gedetecteerd (client-side)!');
@@ -45,6 +46,7 @@ function setupValidation() {
         }
 
         return true;
+   
     });
 }
 
